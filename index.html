@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thiệp cưới - Công Cường & Hà Hằng</title>
+  <!-- Open Graph metadata -->
+  <meta property="og:title" content="Thiệp cưới Công Cường 💍 Hà Hằng" />
+  <meta property="og:description" content="Trân trọng mời bạn đến dự ngày vui của chúng tôi 💚" />
+  <meta property="og:image" content="https://i.imgur.com/Qk1aXrR.jpg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://14.163.197.1:5000/photo.jpg" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container" onclick="initMusic()">
+    <div class="photo-frame">
+      <img src="photo.jpg" alt="Ảnh cưới" class="wedding-photo" />
+    </div>
+
+    <h1 class="double-happiness">囍</h1>
+	<p class="subtitle">LỄ THÀNH HÔN</p>
+    <h2 class="name">Công Cường & Hà Hằng</h2>
+    <p class="invite">Trân trọng mời <strong id="guestName">{{ guest_name }}</strong></p>
+
+
+
+    <div class="date">
+      <div class="small">CHỦ NHẬT</div>
+      <div class="big">30</div>
+      <div class="small">THÁNG 11<br>NĂM 2025</div>
+    </div>
+
+    <div class="countdown" id="countdown"></div>
+	
+
+	
+    <p class="address">
+      📍 Địa chỉ nhà trai:<br>
+      Số 96 Đường Thôn 6, Bắc Sơn, An Dương, Hải Phòng
+    </p>
+	<p class="subtitle">Xác nhận tham dự</p>
+    <div class="buttons">
+      <button onclick="submitChoice('Tham gia')">👍Nhất định sẽ đến<br> 📍Mở bản đồ</button>
+      <button onclick="submitChoice('Bận - Mừng online')">😭Tiếc quá, mình bận rồi<br> 💌Mừng cưới online vậy</button>
+    </div>
+  </div>
+
+  <div id="hearts-container"></div>
+
+  <audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
