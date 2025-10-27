@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # ==== THIẾT LẬP WEBHOOK GOOGLE SHEET ====
 # Dán URL bạn nhận được khi deploy Apps Script (dạng https://script.google.com/macros/s/AKfycbxxxx/exec)
-WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwEpI6vF0zXCXUM6wZxFznlVKXbkYyjE3HEYzrsXg_9dGTnnGJYv57tWaouSTeoW32B/exec"
+WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyfQ0cWcUePAqL-YdbL6WJqiaSRBk9THmr48jsO4nckppk3MZgWLdiBQf0NXqY-3ziq/exec"
 
 # ==== CẤU HÌNH CƠ BẢN ====
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

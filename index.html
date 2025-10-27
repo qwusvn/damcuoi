@@ -5,25 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Thiệp cưới - Công Cường & Hà Hằng</title>
 
-  <!-- 🩷 Open Graph (Messenger & Zalo Preview – cố định cho mọi link) -->
   <meta property="og:title" content="Thiệp cưới Công Cường 💍 Hà Hằng" />
   <meta property="og:description" content="Trân trọng mời bạn đến dự ngày vui của chúng tôi 💚" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://web-production-0c6fd.up.railway.app/" />
-  <meta property="og:image" content="https://i.postimg.cc/Pqp1BH2g/photo-Copy.jpg" />
-  <meta property="og:image:type" content="image/png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:site_name" content="Thiệp cưới Công Cường 💍 Hà Hằng" />
-  <meta property="fb:app_id" content="123456789012345" />
-
-  <!-- 🌸 Favicon -->
-  <link rel="icon" type="image/png" href="photo.jpg">
+  <meta property="og:image" content="https://i.postimg.cc/cs7PrNh0/photo.png" />
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container" onclick="initMusic()">
+
+  <!-- 🌸 Intro mở cửa -->
+  <div id="intro-screen">
+    <div id="intro-left"></div>
+    <div id="intro-right"></div>
+    <div class="tap-text">💖 Chạm để mở 💖</div>
+  </div>
+
+  <!-- 💍 Nội dung chính -->
+  <div class="main-content hidden" onclick="initMusic()">
     <div class="photo-frame">
       <img src="photo.jpg" alt="Ảnh cưới" class="wedding-photo" />
     </div>
@@ -46,14 +44,11 @@
       Số 96 Đường Thôn 6, Bắc Sơn, An Dương, Hải Phòng
     </p>
 
-    <p class="subtitle">Xác nhận tham dự</p>
     <div class="buttons">
       <button onclick="submitChoice('Tham gia')">👍 Nhất định sẽ đến<br>📍 Mở bản đồ</button>
       <button onclick="submitChoice('Bận - Mừng online')">😭 Tiếc quá, mình bận rồi<br>💌 Mừng cưới online vậy</button>
     </div>
   </div>
-
-  <div id="hearts-container"></div>
 
   <audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg" />
