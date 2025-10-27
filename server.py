@@ -1,6 +1,9 @@
 from flask import Flask, request, render_template_string, jsonify, send_from_directory, make_response
-import os, datetime
+import os, datetime, json
 import csv  # <-- SỬA LỖI 1: Thêm import csv
+
+import gspread
+from google.oauth2.service_account import Credentials
 
 app = Flask(__name__)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -20,6 +23,65 @@ def index():
         html = f.read()
     return render_template_string(html, guest_name=guest)
 
+GOOGLE_SHEET_ID = os.environ.get("GOOGLE_SHEET_ID")
+GOOGLE_SHEET_WORKSHEET = os.environ.get("GOOGLE_SHEET_WORKSHEET", "Responses")
+GOOGLE_SHEETS_CREDENTIALS = os.environ.get("GOOGLE_SHEETS_CREDENTIALS")
+GOOGLE_SHEETS_CREDENTIALS_FILE = os.environ.get("GOOGLE_SHEETS_CREDENTIALS_FILE")
+GOOGLE_SHEETS_SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+]
+
+
+def _load_service_account_info():
+    if GOOGLE_SHEETS_CREDENTIALS:
+        try:
+            return json.loads(GOOGLE_SHEETS_CREDENTIALS)
+        except json.JSONDecodeError:
+            print("[Google Sheets] Không thể phân tích GOOGLE_SHEETS_CREDENTIALS thành JSON hợp lệ.")
+            return None
+
+    if GOOGLE_SHEETS_CREDENTIALS_FILE and os.path.exists(GOOGLE_SHEETS_CREDENTIALS_FILE):
+        try:
+            with open(GOOGLE_SHEETS_CREDENTIALS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"[Google Sheets] Lỗi đọc tệp thông tin dịch vụ: {exc}")
+            return None
+
+    return None
+
+
+def _get_worksheet():
+    if not GOOGLE_SHEET_ID:
+        return None
+
+    info = _load_service_account_info()
+    if not info:
+        return None
+
+    try:
+        credentials = Credentials.from_service_account_info(info, scopes=GOOGLE_SHEETS_SCOPES)
+        client = gspread.authorize(credentials)
+        return client.open_by_key(GOOGLE_SHEET_ID).worksheet(GOOGLE_SHEET_WORKSHEET)
+    except Exception as exc:
+        print(f"[Google Sheets] Không thể kết nối: {exc}")
+        return None
+
+
+def append_to_google_sheet(row):
+    worksheet = _get_worksheet()
+    if not worksheet:
+        return False
+
+    try:
+        worksheet.append_row(row)
+        return True
+    except Exception as exc:
+        print(f"[Google Sheets] Lỗi khi ghi dữ liệu: {exc}")
+        return False
+
+
 @app.route("/submit", methods=["POST"])
 def submit():
     data = request.get_json()
@@ -27,9 +89,13 @@ def submit():
     choice = data.get("choice", "Không rõ")
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    row = [timestamp, guest, choice]
     with open(DATA_FILE, "a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow([timestamp, guest, choice])
+        writer.writerow(row)
+
+    append_to_google_sheet(row)
+
     return jsonify({"status": "ok"})
 
 @app.route("/admin")
